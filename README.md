@@ -1,4 +1,4 @@
-### Flowercast
+### flowercast 🌸
 
 Converting gosu window frames to ASCII, color coded with ANSI RGB values.
 
