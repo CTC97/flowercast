@@ -9,7 +9,7 @@ def main
 
   previous_time = Time.now
   delta_time = 0.0
-  frame_rate = 5
+  frame_rate = 12
   target_frame_time = 1.0 / frame_rate
 
   loop do
@@ -22,15 +22,15 @@ def main
       delta_time -= target_frame_time
     end
 
-    window.render("render/render.png")
-    image = ingest_image("render/render.png", width, height)
+    blob = window.render_to_blob
+    image = blob_to_image(blob, width, height)
     ansi = convert_rgba_ansi(image)
     display(ansi)
 
-    system "cls"
-
     sleep_time = target_frame_time - (Time.now - current_time)
     sleep(sleep_time) if sleep_time > 0
+
+    system("clear")
   end
 
 end

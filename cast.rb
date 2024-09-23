@@ -1,7 +1,29 @@
 require 'chunky_png'
 
-def ingest_image(path, width, height)
-  image = ChunkyPNG::Image.from_file(path)
+def blob_to_image(blob, width, height)
+  image = ChunkyPNG::Image.new(width, height)
+
+  (0...height).map do |y|
+    (0...width).map do |x|
+      idx = (y * width + x) * 4  # RGBA, so 4 bytes per pixel
+      r = blob[idx].ord
+      g = blob[idx + 1].ord
+      b = blob[idx + 2].ord
+      a = blob[idx + 3].ord
+      image[x, y] = ChunkyPNG::Color.rgba(r, g, b, a)
+    end
+  end
+
+  (0...image.height).map do |y|
+    (0...image.width).map do |x|
+      pixel = image[x, y]
+      [ChunkyPNG::Color.r(pixel), ChunkyPNG::Color.g(pixel), ChunkyPNG::Color.b(pixel), ChunkyPNG::Color.a(pixel)]
+    end
+  end
+end
+
+def ingest_image(blob, width, height)
+  image = ChunkyPNG::Image.from_blob(blob)
   resized_image = image.resample_nearest_neighbor(width, height)
 
   (0...resized_image.height).map do |y|
