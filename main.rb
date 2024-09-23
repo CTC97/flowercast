@@ -23,8 +23,8 @@ def main
     end
 
     blob = window.render_to_blob
-    image = blob_to_image(blob, width, height)
-    ansi = convert_rgba_ansi(image)
+    image = blob_to_rgba(blob, width, height)
+    ansi = rgba_to_ansi(image)
     display(ansi)
 
     sleep_time = target_frame_time - (Time.now - current_time)

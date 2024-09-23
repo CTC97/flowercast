@@ -1,6 +1,6 @@
 require 'chunky_png'
 
-def blob_to_image(blob, width, height)
+def blob_to_rgba(blob, width, height)
   image = ChunkyPNG::Image.new(width, height)
 
   (0...height).map do |y|
@@ -22,8 +22,8 @@ def blob_to_image(blob, width, height)
   end
 end
 
-def ingest_image(blob, width, height)
-  image = ChunkyPNG::Image.from_blob(blob)
+def file_to_rgba(path, width, height)
+  image = ChunkyPNG::Image.from_file(path)
   resized_image = image.resample_nearest_neighbor(width, height)
 
   (0...resized_image.height).map do |y|
@@ -34,7 +34,7 @@ def ingest_image(blob, width, height)
   end
 end
 
-def convert_rgba_ansi(rgba_pixels)
+def rgba_to_ansi(rgba_pixels)
   rgba_pixels.map do |row|
     row.map do |pixel|
       # currently supports r,g,b ANSI, but not all terminals support this
@@ -54,7 +54,7 @@ def display(ansi_image)
       if (pixel == "\e[49m")
         print " "
       else
-        print "#{pixel}⠿"
+        print "#{pixel}፨ "
       end
     end
     puts
